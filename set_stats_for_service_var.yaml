@@ -1,0 +1,9 @@
+---
+- name: setting service_var from set_stats
+  hosts: localhost
+
+  tasks:
+    - name: "Artifact data of test results to next playbook"
+      set_stats:
+        data:
+          service_var__var1: "secret"

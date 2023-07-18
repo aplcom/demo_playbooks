@@ -1,0 +1,10 @@
+---
+- name: set_stats for MIQ object update
+  hosts: localhost
+
+  tasks:
+    - name: "Artifact data of test results to next playbook"
+      set_stats:
+        data:
+          service_template_provision_task__status: "Warn"
+          service_template_provision_task__options__config_info__active: true

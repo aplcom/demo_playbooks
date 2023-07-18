@@ -1,0 +1,14 @@
+---
+- name: Copy file from one place to another and replace string
+  hosts: all
+  vars:
+    myvar: Centos
+  tasks:
+  - name: copy redhat-release
+    copy: remote_src=True src=/etc/redhat-release dest=/var/tmp/modified-release
+
+  - name: Change redhat string to something else
+    lineinfile: dest='/var/tmp/modified-release' regexp='^Red Hat(.*)' line='{{ myvar }}\1' backrefs=yes
+    
+
+
