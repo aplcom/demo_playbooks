@@ -1,6 +1,6 @@
 ---
 - name: Install Zabbix Server and Frontend
-  hosts: zabbix_servers
+  hosts: all
   become: true
 
   tasks:
