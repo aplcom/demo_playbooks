@@ -1,0 +1,113 @@
+---
+- name: Install Zabbix Server and Frontend
+  hosts: zabbix_servers
+  become: true
+
+  tasks:
+    - name: Update apt/yum package cache
+      package_facts:
+        manager: auto
+
+    - name: Install required packages
+      package:
+        name:
+          - apache2
+          - mysql-server
+          - mysql-client
+          - php
+          - php-mysql
+          - php-gd
+          - php-bcmath
+          - php-xml
+          - php-mbstring
+          - libapache2-mod-php
+          - fping
+          - snmp
+          - snmpd
+          - unzip
+        state: present
+
+    - name: Start and enable Apache service
+      service:
+        name: apache2
+        state: started
+        enabled: true
+
+    - name: Start and enable MySQL service
+      service:
+        name: mysql
+        state: started
+        enabled: true
+
+    - name: Create MySQL database for Zabbix
+      mysql_db:
+        name: zabbix
+        state: present
+        login_user: root
+        login_password: your_mysql_root_password
+
+    - name: Create MySQL user for Zabbix
+      mysql_user:
+        name: zabbix
+        password: your_zabbix_mysql_password
+        priv: "zabbix.*:ALL"
+        login_user: root
+        login_password: your_mysql_root_password
+        state: present
+
+    - name: Download Zabbix release package
+      get_url:
+        url: "https://repo.zabbix.com/zabbix/5.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.4-1+ubuntu20.04_all.deb"
+        dest: /tmp/zabbix-release.deb
+
+    - name: Install Zabbix release package
+      apt:
+        deb: /tmp/zabbix-release.deb
+        state: present
+
+    - name: Update apt package cache (again)
+      package_facts:
+        manager: auto
+
+    - name: Install Zabbix Server, Frontend, Agent
+      package:
+        name:
+          - zabbix-server-mysql
+          - zabbix-frontend-php
+          - zabbix-apache-conf
+          - zabbix-agent
+        state: present
+
+    - name: Configure Zabbix Server
+      lineinfile:
+        dest: /etc/zabbix/zabbix_server.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items:
+        - { regexp: '^DBPassword=', line: 'DBPassword=altech123' }
+
+    - name: Import initial Zabbix database schema
+      shell: zcat /usr/share/doc/zabbix-server-mysql/create.sql.gz | mysql -uzabbix -p'altech123' zabbix
+      args:
+        executable: /bin/bash
+
+    - name: Start and enable Zabbix Server and Agent
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - zabbix-server
+        - zabbix-agent
+
+    - name: Ensure Zabbix Agent starts on boot
+      service:
+        name: zabbix-agent
+        enabled: true
+        state: started
+
+    - name: Restart Apache to apply changes
+      service:
+        name: apache2
+        state: restarted
