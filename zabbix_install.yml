@@ -44,15 +44,15 @@
         name: zabbix
         state: present
         login_user: root
-        login_password: your_mysql_root_password
+        login_password: altech123
 
     - name: Create MySQL user for Zabbix
       mysql_user:
         name: zabbix
-        password: your_zabbix_mysql_password
+        password: altech123
         priv: "zabbix.*:ALL"
         login_user: root
-        login_password: your_mysql_root_password
+        login_password: altech123
         state: present
 
     - name: Download Zabbix release package
