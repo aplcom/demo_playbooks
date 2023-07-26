@@ -1,0 +1,27 @@
+---
+- name: Install Apache on Ubuntu and CentOS
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install Apache on Ubuntu
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Apache on CentOS
+      yum:
+        name: httpd
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Start Apache service
+      service:
+        name: "{{ apache_service }}"
+        state: started
+        enabled: true
+      vars:
+        apache_service:
+          Debian: apache2
+          RedHat: httpd
