@@ -7,14 +7,15 @@
     file:
       path: "~/test_ansible_file"
       state: touch
-      
-  - name: Remove apt lock file
-    file:
-      state: absent
-      path: "/var/lib/dpkg/lock-frontend"
-      
-    - name: Install Apache on Ubuntu
-      apt:
-        name: apache2
-        state: present
+  #    
+#  - name: Remove apt lock file
+#    file:
+#      state: absent
+#      path: "/var/lib/dpkg/lock-frontend"
+ #     
+#    - name: Install Apache on Ubuntu
+ #     apt:
+ #       name: apache2
+ #       state: present
      # when: ansible_os_family == 'Debian'
+#
