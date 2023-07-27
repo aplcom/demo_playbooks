@@ -1,9 +1,13 @@
 ---
-- name: Install Apache on Ubuntu and CentOS
+- name: Creating empty file using Ansible playbook
   hosts: all
-  become: true
-
+  user: root
   tasks:
+  - name: Ansible create file
+    file:
+      path: "~/test_ansible_file"
+      state: touch
+      
   - name: Remove apt lock file
     file:
       state: absent
