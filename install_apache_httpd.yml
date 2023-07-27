@@ -4,6 +4,11 @@
   become: true
 
   tasks:
+  - name: Remove apt lock file
+    file:
+      state: absent
+      path: "/var/lib/dpkg/lock-frontend"
+      
     - name: Install Apache on Ubuntu
       apt:
         name: apache2
