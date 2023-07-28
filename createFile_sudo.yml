@@ -1,7 +1,7 @@
 ---
 - name: Creating empty file using Ansible playbook
   hosts: all
-  user: root
+  user: prakash
   become: yes
   tasks:
   - name: Ansible create file
