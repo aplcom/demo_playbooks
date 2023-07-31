@@ -6,5 +6,5 @@
   tasks:
   - name: Ansible create file
     file:
-      path: "/opt/test_ansible_file"
+      path: "~/test_ansible_file"
       state: touch
