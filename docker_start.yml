@@ -1,0 +1,12 @@
+---
+- name: start Docker
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
