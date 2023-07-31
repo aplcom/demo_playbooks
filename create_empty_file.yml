@@ -3,6 +3,7 @@
   hosts: all
   #user: root
   user: test
+  become: true
   tasks:
   - name: Ansible create file
     file:
