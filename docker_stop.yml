@@ -1,9 +1,9 @@
 ---
 - name: stop Docker
   hosts: all
-  become: yes
+  #become: yes
   #user: root
-  user: test
+  #user: test
 
 
   tasks:
