@@ -13,3 +13,6 @@
         name: docker
         state: stopped
         # enabled: yes
+
+    - name: Display info
+      shell: echo "allokay..."
