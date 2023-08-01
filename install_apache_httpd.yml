@@ -7,33 +7,33 @@
     file:
       path: "~/test_ansible_file"
       state: touch
-      
+
   - name: Remove apt lock file
     file:
       state: absent
       path: "/var/lib/dpkg/lock-frontend"
-      
-    - name: Install Apache on Ubuntu
-      apt:
-        name: apache2
-        state: present
-      when: ansible_os_family == 'Debian'
 
-    - name: Install Apache on CentOS
-      yum:
-        name: httpd
-        state: present
-      when: ansible_os_family == 'RedHat'
+  - name: Install Apache on Ubuntu
+    apt:
+      name: apache2
+      state: present
+    when: ansible_os_family == 'Debian'
 
-    - name: Start Apache service
-      service:
-        name: "{{ apache_service }}"
-        state: started
-        enabled: true
-      vars:
-        apache_service:
-          Debian: apache2
-          RedHat: httpd
+  - name: Install Apache on CentOS
+    yum:
+      name: httpd
+      state: present
+    when: ansible_os_family == 'RedHat'
 
-    - name: Display info
-      shell: echo "allokay..."          
+  - name: Start Apache service
+    service:
+      name: "{{ apache_service }}"
+      state: started
+      enabled: true
+    vars:
+      apache_service:
+        Debian: apache2
+        RedHat: httpd
+
+  - name: Display info
+    shell: echo "allokay..."
