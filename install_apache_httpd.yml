@@ -34,3 +34,6 @@
         apache_service:
           Debian: apache2
           RedHat: httpd
+
+    - name: Display info
+      shell: echo "allokay..."          
