@@ -1,0 +1,68 @@
+---
+- name: Install Docker
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install required packages (CentOS)
+      package:
+        name: ['yum-utils', 'device-mapper-persistent-data', 'lvm2']
+        state: present
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+    - name: Install required packages (Ubuntu)
+      package:
+        name: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common']
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Add Docker's official GPG key
+      ansible.builtin.command:
+        cmd: curl -fsSL https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        warn: false
+
+    - name: Add Docker repository
+      ansible.builtin.blockinfile:
+        path: /etc/apt/sources.list.d/docker.list
+        create: yes
+        block: |
+          deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Add Docker repository (CentOS)
+      ansible.builtin.blockinfile:
+        path: /etc/yum.repos.d/docker-ce.repo
+        create: yes
+        block: |
+          [docker-ce-stable]
+          name=Docker CE Stable - $basearch
+          baseurl=https://download.docker.com/linux/{{ ansible_distribution | lower }}/$releasever/$basearch/stable
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
+          containerd.io_delay_seconds=1
+          exclude=docker-ce-cli
+
+    - name: Install Docker (CentOS)
+      package:
+        name: docker-ce
+        state: present
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+    - name: Install Docker (Ubuntu)
+      package:
+        name: docker-ce
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+
+    # - name: Add user to the docker group
+      # user:
+        # name: altech
+        # groups: docker
+        # append: yes
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
