@@ -14,5 +14,5 @@
         state: stopped
         # enabled: yes
 
-    - name: Display info
-      shell: echo "allokay..."
+  #  - name: Display info
+   #   shell: echo "allokay..."
