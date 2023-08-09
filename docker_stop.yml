@@ -1,7 +1,7 @@
 ---
 - name: stop Docker
   hosts: all
-  become: yes
+  #become: yes
   #user: root
   #user: test
 
@@ -14,5 +14,5 @@
         state: stopped
         # enabled: yes
 
-  #  - name: Display info
-   #   shell: echo "allokay..."
+    - name: Display info
+      shell: echo "allokay..."
