@@ -1,4 +1,4 @@
-- hosts: ansible
+- hosts: all
   gather_facts: no
 #  become: true
   become_method: sudo
