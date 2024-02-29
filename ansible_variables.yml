@@ -1,0 +1,18 @@
+- hosts: ansible
+  gather_facts: no
+#  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+  - debug:
+      var: hostvars  
+    register: shell_output
+  
+  - name: copy the output to a local file
+    copy:
+      content: "{{ shell_output }}"
+      dest: "/tmp/ansible_variables.txt"
+    delegate_to: localhost  
+  
+
