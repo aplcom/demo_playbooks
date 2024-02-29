@@ -8,7 +8,4 @@
         owner: root 
         group: root 
         mode: 0644
-        seuser: unconfined_u
-        serole: object_r
-        setype: user_tmp_t
-        selevel: s0
+
