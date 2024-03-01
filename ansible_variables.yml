@@ -6,7 +6,7 @@
 
   tasks:
   - debug:
-      var: hostvars  
+      msg: "TEST_VARIABLE: {{ TEST_VAR_2 }}, TEST_VAR_2: {{ TEST_VAR_2 }}"  
     register: shell_output
   
   - name: copy the output to a local file
