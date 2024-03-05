@@ -13,6 +13,6 @@
   - name: copy the output to a local file
     copy:
       content: "{{ shell_output }}"
-      dest: "/tmp/ansi_variables.txt"
+      dest: "/tmp/ansi2_variables.txt"
     delegate_to: localhost  
   
