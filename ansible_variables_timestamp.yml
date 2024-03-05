@@ -1,0 +1,19 @@
+- hosts: all
+  gather_facts: yes
+#  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+  - name: Register time and variable values.
+    debug:
+      msg: "{{ ansible_date_time.iso8601 }}, TEST_VARIABLE 1: {{ TEST_VAR_1 }}, TEST_VARIABLE 2: {{ TEST_VAR_2 }}"  
+    register: shell_output
+  
+  - name: append the output to local file 
+    lineinfile:
+      path: "/tmp/ansible_variables.txt"
+      line: "{{ shell_output }}"
+      create: yes 
+    delegate_to: localhost  
+  
